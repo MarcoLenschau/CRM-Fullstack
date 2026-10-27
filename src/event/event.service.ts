@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { eventDTO } from './dto/event.dto';
-
+import crypto from 'crypto';
 @Injectable()
 export class EventService {
     events: eventDTO[] = [];
@@ -10,6 +10,10 @@ export class EventService {
     }
 
     createEvent(event: eventDTO): void {
-        this.events.push(event)
+        // if (event && event.description && event.start && event.end) {
+            event.id = crypto.randomUUID();
+            this.events.push(event);
+        // }
+        
     }
 }

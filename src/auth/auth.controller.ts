@@ -2,7 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { registerDTO } from './dto/register.dto'
 import argon2 from 'argon2';
 
-@Controller('auth')
+@Controller('api/auth')
 export class AuthController {
     @Post()
     async register(@Body() payload: registerDTO) {
