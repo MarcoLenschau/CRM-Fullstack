@@ -8,7 +8,6 @@ async function bootstrap() {
     .setTitle('CRM')
     .setDescription('API documentation')
     .setVersion('1.0')
-    .addServer('/api/v1')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

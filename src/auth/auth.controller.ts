@@ -1,19 +1,22 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { registerDTO } from './dto/register.dto'
-import argon2 from 'argon2';
+import { Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
+import { LocalAuthGuard } from './guards/local-auth.guard';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { AuthService } from './auth.service';
 
-@Controller('api/auth')
+@Controller('auth')
 export class AuthController {
-    @Post()
-    async register(@Body() payload: registerDTO) {
-        if (payload && payload.email && payload.password && payload.username) {
-            const passwordHash = await argon2.hash(payload.password, {
-              type: argon2.argon2id,
-              memoryCost: 19456, 
-              timeCost: 2,
-              parallelism: 1,
-            });
-            return passwordHash;
-        }
+    constructor(private authService: AuthService) {}
+
+    @UseGuards(LocalAuthGuard)
+    @Post('login')
+    async login(@Request() req: any) {
+        return this.authService.login(req.user);
+      
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get('profile')
+    getProfile(@Request() req: any) {
+      return req.user;
     }
 }
