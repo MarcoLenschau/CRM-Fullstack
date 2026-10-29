@@ -11,8 +11,7 @@ export class EventService {
 
     createEvent(event: eventDTO): void {
         // if (event && event.description && event.start && event.end) {
-            event.id = crypto.randomUUID();
-            this.events.push(event);
+            this.events.push({...event, id: crypto.randomUUID()});
         // }
         
     }

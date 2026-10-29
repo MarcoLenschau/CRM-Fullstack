@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post } from '@nestjs/common';
 import { eventDTO } from './dto/event.dto';
 import { EventService } from './event.service';
 
-@Controller('api/event')
+@Controller('event')
 export class EventController {
     constructor(private eventService: EventService) {}
 
