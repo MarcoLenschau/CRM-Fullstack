@@ -3,14 +3,26 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { EventController } from './event/event.controller';
 import { EventService } from './event/event.service';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
-  imports: [ConfigModule.forRoot({isGlobal: true,}), AuthModule, UsersModule],
+  imports: [
+    ConfigModule.forRoot({isGlobal: true,}), 
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        uri: config.getOrThrow<string>('MONGODB_URI'),
+      }),
+    }),
+    AuthModule, 
+    UsersModule
+  ],
   controllers: [AppController, EventController],
   providers: [AppService, EventService, {provide: APP_GUARD, useClass: JwtAuthGuard}],
 })
