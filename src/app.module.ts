@@ -9,6 +9,7 @@ import { UsersModule } from './users/users.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { MongooseModule } from '@nestjs/mongoose';
+import { RolesGuard } from './auth/guards/roles.guard';
 
 @Module({
   imports: [
@@ -24,6 +25,6 @@ import { MongooseModule } from '@nestjs/mongoose';
     UsersModule
   ],
   controllers: [AppController, EventController],
-  providers: [AppService, EventService, {provide: APP_GUARD, useClass: JwtAuthGuard}],
+  providers: [AppService, EventService, {provide: APP_GUARD, useClass: JwtAuthGuard}, {provide: APP_GUARD, useClass: RolesGuard }],
 })
 export class AppModule {}
