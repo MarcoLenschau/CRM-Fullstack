@@ -8,7 +8,14 @@ export enum Role {
   ADMIN = 1,
 }
 
-@Schema({ timestamps: true })
+@Schema({timestamps: true, versionKey: false,
+  toJSON: { transform: (_doc, ret: any) => { 
+      delete ret._id;
+      delete ret.password;
+      return ret;
+    },
+  },
+})
 export class User {
   @Prop({
     required: true,
